@@ -3,22 +3,72 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "zc-center-sdk"
+name = "zc-center-sdk-python"
 version = "1.0.0"
-description = "ZC Center SAPI Python SDK（签名、AES-GCM、招考公告推送）"
+description = "ZC Center SAPI Python SDK (HMAC-SHA256, AES-256-GCM, exam notice push)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+  { name = "liujunlin", email = "ljl763606865@gmail.com" },
+]
+maintainers = [
+  { name = "liujunlin", email = "ljl763606865@gmail.com" },
+]
+keywords = [
+  "zc-center",
+  "sapi",
+  "sdk",
+  "hmac",
+  "aes-gcm",
+  "exam-notice",
+  "flask",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
 dependencies = [
   "requests>=2.31.0",
   "cryptography>=42.0.0",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0"]
+dev = [
+  "pytest>=7.0",
+  "build>=1.2",
+  "twine>=5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/763606865/zc-center-sdk-python"
+Documentation = "https://github.com/763606865/zc-center-sdk-python#readme"
+Repository = "https://github.com/763606865/zc-center-sdk-python"
+Issues = "https://github.com/763606865/zc-center-sdk-python/issues"
+Changelog = "https://github.com/763606865/zc-center-sdk-python/releases"
+
+[tool.setuptools]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["zc_center*"]
+
+[tool.setuptools.package-data]
+zc_center = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]

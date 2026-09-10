@@ -10,6 +10,8 @@ from .exceptions import (
 )
 from .response import Response
 
+__version__ = "1.0.0"
+
 __all__ = [
     "Client",
     "Response",
@@ -18,4 +20,5 @@ __all__ = [
     "CryptoException",
     "SignatureException",
     "TransportException",
+    "__version__",
 ]

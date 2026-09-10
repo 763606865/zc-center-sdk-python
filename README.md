@@ -2,19 +2,30 @@
 
 适用于 Python 3.10+ 的中台 SAPI 服务端 SDK，提供 HMAC-SHA256 请求签名、AES-256-GCM 加解密、响应验签，以及招考公告推送封装。
 
-协议与 [`docs/sapi/`](../../docs/sapi/README.md)、ThinkPHP / Spring Boot SDK 保持一致。
+协议与中台 [`docs/sapi/`](../../docs/sapi/README.md)、ThinkPHP / Spring Boot SDK 保持一致。许可证：Apache-2.0。
 
 `app_secret` 只能保存在爬虫/服务端，禁止写入前端或客户端。
 
 ## 安装
 
+PyPI（发布后）：
+
+```bash
+pip install zc-center-sdk
+```
+
+源码开发（推荐虚拟环境，避免 macOS `externally-managed-environment`）：
+
 ```bash
 cd sdk/python
-pip install -e .
-# 开发自测
-pip install -e ".[dev]"
-pytest
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install -e ".[dev]"
+pytest -q
 ```
+
+发布到 PyPI 的完整步骤见 [PUBLISH.md](./PUBLISH.md)。
 
 ## 配置
 
@@ -64,6 +75,8 @@ result = client.exam_notice().report_batch([
 
 print(result["created"], result["exists"], result["failed"])
 ```
+
+Flask 等框架无特殊依赖，在服务端任务里直接 `from zc_center import Client` 即可。
 
 ### 一键推送 JSON 文件
 
