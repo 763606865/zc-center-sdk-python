@@ -1,0 +1,97 @@
+# ZC Center Python SDK
+
+适用于 Python 3.10+ 的中台 SAPI 服务端 SDK，提供 HMAC-SHA256 请求签名、AES-256-GCM 加解密、响应验签，以及招考公告推送封装。
+
+协议与 [`docs/sapi/`](../../docs/sapi/README.md)、ThinkPHP / Spring Boot SDK 保持一致。
+
+`app_secret` 只能保存在爬虫/服务端，禁止写入前端或客户端。
+
+## 安装
+
+```bash
+cd sdk/python
+pip install -e .
+# 开发自测
+pip install -e ".[dev]"
+pytest
+```
+
+## 配置
+
+| 环境变量 | 说明 |
+| --- | --- |
+| `ZC_CENTER_BASE_URL` | 中台根地址，如 `https://zc-center.example.com` |
+| `ZC_CENTER_APP_KEY` | 中台应用 `app_key` |
+| `ZC_CENTER_APP_SECRET` | 中台应用 `app_secret` |
+| `ZC_CENTER_ENCRYPTION` | `1`/`0`，须与中台 `SAPI_ENCRYPTION_ENABLED` 一致 |
+
+联调可关闭加密；生产必须开启。
+
+## 爬虫推荐流程
+
+1. 在中台「业务管理 → 应用管理」为爬虫创建生态应用，拿到 `app_key` / `app_secret`，配置 IP 白名单。
+2. 爬虫抓取并组合数据后，**不要依赖中台扫盘读 JSON**；直接调用 `exam_notice.report_batch`。
+3. 每条至少传 `title`、`collect_source`；强烈建议再传稳定幂等键之一：
+   - `uuid`（来源系统 UUID v4）
+   - 或 `collect_ref`（来源站点内唯一 ID）
+   - 或稳定的 `official_url` / `collect_url`
+4. 单次最多 100 条；示例脚本会自动分批。
+
+### 代码示例
+
+```python
+from zc_center import Client
+
+client = Client(
+    base_url="https://zc-center.example.com",
+    app_key="...",
+    app_secret="...",
+    encryption=True,
+)
+
+client.ping().send("crawler-ready")
+
+result = client.exam_notice().report_batch([
+    {
+        "title": "某市事业单位招聘公告",
+        "collect_source": "某市人社局",
+        "collect_ref": "src-2026-001",
+        "official_url": "https://example.com/notices/1",
+        "publish_time": 1788888888,
+        "content": "<p>公告正文</p>",
+    }
+]).data()
+
+print(result["created"], result["exists"], result["failed"])
+```
+
+### 一键推送 JSON 文件
+
+```bash
+export ZC_CENTER_BASE_URL=https://zc-center.example.com
+export ZC_CENTER_APP_KEY=...
+export ZC_CENTER_APP_SECRET=...
+
+python examples/push_exam_notices.py /data/crawler/notices-2026-09-09.json
+```
+
+JSON 支持数组，或 `{"items":[...]}` / `{"list":[...]}`。
+
+## 字段约定（招考公告）
+
+| 字段 | 必填 | 说明 |
+| --- | --- | --- |
+| `title` | 是 | 公告标题 |
+| `collect_source` | 是 | 采集来源站点/单位名 |
+| `uuid` | 推荐 | UUID v4，来源稳定 ID |
+| `collect_ref` | 推荐 | 来源侧业务主键 |
+| `official_url` / `collect_url` | 推荐 | 用于排重 |
+| `code` / `exam_type` / `area_code` | 否 | 业务编码、招考类型、地区码 |
+| `publisher_name` / `summary` / `content` | 否 | 发布单位、摘要、正文 |
+| `publish_time` 等时间字段 | 否 | Unix 秒；也可传可解析时间字符串 |
+
+排重优先级见 [`docs/sapi/招考公告.md`](../../docs/sapi/招考公告.md)。
+
+## 与「扫盘导入」的关系
+
+本 SDK 走推模式：爬虫写完即上报。中台无需再为「几点读哪个目录」建配置表；若仍保留本地 JSON，仅作备份或对账即可。
