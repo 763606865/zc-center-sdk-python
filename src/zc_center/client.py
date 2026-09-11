@@ -10,6 +10,7 @@ import requests
 
 from .api.exam_notice import ExamNoticeApi
 from .api.ping import PingApi
+from .api.resume import ResumeApi
 from .crypto import Crypto
 from .exceptions import (
     ApiException,
@@ -64,6 +65,9 @@ class Client:
 
     def exam_notice(self) -> ExamNoticeApi:
         return self._api(ExamNoticeApi)
+
+    def resume(self) -> ResumeApi:
+        return self._api(ResumeApi)
 
     def get(self, path: str, query: Mapping[str, Any] | None = None) -> Response:
         return self.request("GET", path, {}, query or {})

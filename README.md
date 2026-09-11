@@ -107,4 +107,13 @@ JSON 支持数组，或 `{"items":[...]}` / `{"list":[...]}`。
 
 ## 与「扫盘导入」的关系
 
+## 简历增量同步
+
+```python
+page = client.resume().list({"updated_after": 0, "last_id": 0, "limit": 100})
+client.resume().update({"uuid": resume_uuid, "job_status": "actively_looking"})
+```
+
+每页都应保存 `next_updated_after` 与 `next_last_id`，下次请求同时回传。
+
 本 SDK 走推模式：爬虫写完即上报。中台无需再为「几点读哪个目录」建配置表；若仍保留本地 JSON，仅作备份或对账即可。
