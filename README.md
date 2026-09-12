@@ -116,4 +116,22 @@ client.resume().update({"uuid": resume_uuid, "job_status": "actively_looking"})
 
 每页都应保存 `next_updated_after` 与 `next_last_id`，下次请求同时回传。
 
+## 职位库 / 职位
+
+```python
+client.job_bank().list({"page": 1, "page_size": 20})
+page = client.job().list({"updated_after": 0, "last_id": 0, "limit": 100})
+client.job().report({
+    "bank_code": "default_center",
+    "company_credit_code": "91110000MA01234567",
+    "code": "JD-001",
+    "title": "后端工程师",
+    "employment_type": 1,
+    "status": 1,
+})
+client.job().update({"uuid": job_uuid, "status": 2, "remark": "协助暂停"})
+```
+
+游标与权限见中台 [`docs/sapi/职位.md`](../../docs/sapi/职位.md)。
+
 本 SDK 走推模式：爬虫写完即上报。中台无需再为「几点读哪个目录」建配置表；若仍保留本地 JSON，仅作备份或对账即可。

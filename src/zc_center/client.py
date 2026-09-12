@@ -9,6 +9,8 @@ from urllib.parse import urlparse
 import requests
 
 from .api.exam_notice import ExamNoticeApi
+from .api.job import JobApi
+from .api.job_bank import JobBankApi
 from .api.ping import PingApi
 from .api.resume import ResumeApi
 from .crypto import Crypto
@@ -68,6 +70,12 @@ class Client:
 
     def resume(self) -> ResumeApi:
         return self._api(ResumeApi)
+
+    def job(self) -> JobApi:
+        return self._api(JobApi)
+
+    def job_bank(self) -> JobBankApi:
+        return self._api(JobBankApi)
 
     def get(self, path: str, query: Mapping[str, Any] | None = None) -> Response:
         return self.request("GET", path, {}, query or {})
