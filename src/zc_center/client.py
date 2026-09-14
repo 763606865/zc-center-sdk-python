@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 import requests
 
 from .api.exam_notice import ExamNoticeApi
+from .api.exam_position import ExamPositionApi
 from .api.job import JobApi
 from .api.job_bank import JobBankApi
 from .api.ping import PingApi
@@ -67,6 +68,9 @@ class Client:
 
     def exam_notice(self) -> ExamNoticeApi:
         return self._api(ExamNoticeApi)
+
+    def exam_position(self) -> ExamPositionApi:
+        return self._api(ExamPositionApi)
 
     def resume(self) -> ResumeApi:
         return self._api(ResumeApi)
