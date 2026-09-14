@@ -1,6 +1,6 @@
 # 发布到 PyPI
 
-包名：`zc-center-sdk`  
+包名：`zc-center-sdk-python`  
 导入名：`zc_center`  
 协议：Apache-2.0（与 Spring Boot SDK 一致）
 
@@ -10,7 +10,7 @@ macOS / Homebrew Python **不要**直接对系统环境执行 `python3 -m pip in
 
 1. 注册 [https://pypi.org](https://pypi.org)（建议同时注册 [TestPyPI](https://test.pypi.org) 做演练）。
 2. 账号 → Account settings → API tokens → Add API token。
-3. 权限选「Entire account」或限定项目 `zc-center-sdk`。
+3. 权限选「Entire account」或限定项目 `zc-center-sdk-python`。
 4. 本机写入 `~/.pypirc`（勿提交到 Git）：
 
 ```ini
@@ -38,7 +38,7 @@ password = pypi-AgENdGVzdC5weXBpLm9yZw...你的 TestPyPI Token
 - [ ] README / CHANGELOG（如有）已更新
 - [ ] 单测通过
 - [ ] `LICENSE`、作者、仓库 URL 正确
-- [ ] 包名 `zc-center-sdk` 在 PyPI 仍可用（或你已拥有该项目）
+- [ ] 包名 `zc-center-sdk-python` 在 PyPI 仍可用（或你已拥有该项目）
 
 ## 3. 构建与上传（推荐流程）
 
@@ -78,13 +78,13 @@ twine upload dist/*
 
 ```bash
 # 正式源
-python -m pip install zc-center-sdk==1.0.0
+python -m pip install zc-center-sdk-python==1.0.4
 
 # 或从 TestPyPI 验证
 python -m pip install \
   --index-url https://test.pypi.org/simple/ \
   --extra-index-url https://pypi.org/simple/ \
-  zc-center-sdk==1.0.0
+  zc-center-sdk-python==1.0.4
 
 python -c "from zc_center import Client; import zc_center; print(zc_center.__version__)"
 ```
