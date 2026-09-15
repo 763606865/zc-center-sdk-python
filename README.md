@@ -89,6 +89,29 @@ page = client.exam_notice().list({
 
 Flask 等框架无特殊依赖，在服务端任务里直接 `from zc_center import Client` 即可。
 
+## 组织与企业
+
+```python
+from zc_center import OrganizationApi
+
+reported = client.organization().report({
+    "external_id": "school-10001",
+    "name": "示例职业技术学校",
+    "primary_type": OrganizationApi.TYPE_SCHOOL,
+    "area_code": "110101",
+}).data()
+
+organization = client.organization().detail({
+    "organization_uuid": reported["organization"]["uuid"],
+}).data()["organization"]
+
+enterprise = client.enterprise().detail({
+    "credit_code": "91110000MA01234567",
+}).data()["enterprise"]
+```
+
+组织首次使用 `external_id` 幂等上报。企业上报仍调用 `client.enterprise().report(...)`，SDK 对应的服务端接口会自动创建或更新组织主体。
+
 ### 一键推送 JSON 文件
 
 ```bash

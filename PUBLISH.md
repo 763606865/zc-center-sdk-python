@@ -78,13 +78,13 @@ twine upload dist/*
 
 ```bash
 # 正式源
-python -m pip install zc-center-sdk-python==1.0.4
+python -m pip install zc-center-sdk-python==1.0.5
 
 # 或从 TestPyPI 验证
 python -m pip install \
   --index-url https://test.pypi.org/simple/ \
   --extra-index-url https://pypi.org/simple/ \
-  zc-center-sdk-python==1.0.4
+  zc-center-sdk-python==1.0.5
 
 python -c "from zc_center import Client; import zc_center; print(zc_center.__version__)"
 ```

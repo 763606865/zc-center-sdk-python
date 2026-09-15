@@ -10,8 +10,10 @@ import requests
 
 from .api.exam_notice import ExamNoticeApi
 from .api.exam_position import ExamPositionApi
+from .api.enterprise import EnterpriseApi
 from .api.job import JobApi
 from .api.job_bank import JobBankApi
+from .api.organization import OrganizationApi
 from .api.ping import PingApi
 from .api.resume import ResumeApi
 from .crypto import Crypto
@@ -65,6 +67,12 @@ class Client:
 
     def ping(self) -> PingApi:
         return self._api(PingApi)
+
+    def enterprise(self) -> EnterpriseApi:
+        return self._api(EnterpriseApi)
+
+    def organization(self) -> OrganizationApi:
+        return self._api(OrganizationApi)
 
     def exam_notice(self) -> ExamNoticeApi:
         return self._api(ExamNoticeApi)

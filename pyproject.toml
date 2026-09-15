@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zc-center-sdk-python"
-version = "1.0.4"
-description = "ZC Center SAPI Python SDK (HMAC-SHA256, AES-256-GCM, exam notice/position push)"
+version = "1.0.5"
+description = "ZC Center SAPI Python SDK (HMAC-SHA256, AES-256-GCM, organization and business APIs)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
